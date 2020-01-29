@@ -111,8 +111,20 @@ bool CChar::Spell_Teleport(CPointMap ptDest, bool fTakePets, bool fCheckAntiMagi
 
 				if ( (pChar->Skill_GetActive() == NPCACT_FOLLOW_TARG) && (pChar->m_Act_Targ == GetUID()) )
 				{
-					if ( pChar->CanMoveWalkTo(ptOld, false, true) )
-						pChar->Spell_Teleport(ptDest, fTakePets, fCheckAntiMagic, fDisplayEffect, iEffect, iSound);
+
+					if (IsTrigUsed(TRIGGER_FOLLOWMYMASTER)) {
+						if (pChar->OnTrigger(CTRIG_FollowMyMaster, this) == TRIGRET_RET_TRUE) {
+							break;
+						}
+						else {
+							if (pChar->CanMoveWalkTo(ptOld, false, true))
+								pChar->Spell_Teleport(ptDest, fTakePets, fCheckAntiMagic, fDisplayEffect, iEffect, iSound);
+						}
+					}
+					else {
+						if (pChar->CanMoveWalkTo(ptOld, false, true))
+							pChar->Spell_Teleport(ptDest, fTakePets, fCheckAntiMagic, fDisplayEffect, iEffect, iSound);
+					}
 				}
 			}
 		}

@@ -34,9 +34,9 @@ const LPCTSTR CChar::sm_szTrigName[CTRIG_QTY + 1] =	// static
 	"@EffectAdd",
 	"@EnvironChange",
 	"@ExpChange",
-	"@ExpLevelChange",
 	"@FameChange",
 	"@FollowersUpdate",
+	"@FollowMyMaster",			//Am I going to follow my master through teleport?
 	"@GetHit",
 	"@Hit",
 	"@HitCheck",
@@ -117,6 +117,8 @@ const LPCTSTR CChar::sm_szTrigName[CTRIG_QTY + 1] =	// static
 	"@Resurrect",
 	"@SeeCrime",
 	"@SeeHidden",
+	"@SeeItem",
+	"@SeeNpc",
 	"@SeeSnoop",
 	"@SkillAbort",
 	"@SkillChange",
@@ -152,14 +154,12 @@ const LPCTSTR CChar::sm_szTrigName[CTRIG_QTY + 1] =	// static
 	"@UserExtCmd",
 	"@UserExWalkLimit",
 	"@UserGuildButton",
-	"@UserKRToolbar",
 	"@UserMailBag",
 	"@UserQuestArrowClick",
 	"@UserQuestButton",
 	"@UserSkills",
 	"@UserSpecialMove",
 	"@UserStats",
-	"@UserUltimaStoreButton",
 	"@UserVirtue",
 	"@UserVirtueInvoke",
 	"@UserWarmode",
@@ -3561,14 +3561,14 @@ void CChar::ChangeExperience(int iDelta, CChar *pCharDead)
 			iDelta = level - m_level;
 			bool fShowMsg = (m_pClient != NULL);
 
-			if ( IsTrigUsed(TRIGGER_EXPLEVELCHANGE) )
-			{
-				CScriptTriggerArgs args(iDelta);
-				if ( OnTrigger(CTRIG_ExpLevelChange, this, &args) == TRIGRET_RET_TRUE )
-					return;
-				iDelta = static_cast<int>(args.m_iN1);
-				fShowMsg = (args.m_iN2 != 0);
-			}
+			//if ( IsTrigUsed(TRIGGER_EXPLEVELCHANGE) )
+			//{
+			//	CScriptTriggerArgs args(iDelta);
+			//	if ( OnTrigger(CTRIG_ExpLevelChange, this, &args) == TRIGRET_RET_TRUE )
+			//		return;
+			//	iDelta = static_cast<int>(args.m_iN1);
+			//	fShowMsg = (args.m_iN2 != 0);
+			//}
 
 			// Prevent integer underflow due to negative level change
 			level = m_level + iDelta;

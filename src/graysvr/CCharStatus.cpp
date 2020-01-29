@@ -789,6 +789,20 @@ bool CChar::CanSee(const CObjBaseTemplate *pObj) const
 		if ( !CanSeeItem(pItem) )
 			return false;
 
+		if ((IsTrigUsed(TRIGGER_SEEITEM)) && (!IsPriv(PRIV_GM))) {
+			if (CanSeeItem(pItem)) {
+				CScriptTriggerArgs Args;
+				Args.m_iN1 = 1;
+				CItem *pItem2 = const_cast<CItem*>(pItem); //I
+				CChar *this2 = const_cast<CChar*>(this); //src
+				Args.m_pO1 = pItem2;
+				this2->OnTrigger(CTRIG_SeeItem, this2, &Args);
+				if (Args.m_iN1 == 0) {
+					return (Args.m_iN1 != 0);
+				}
+			}
+		}
+
 		int iDist = pItem->IsTypeMulti() ? UO_MAP_VIEW_RADAR : GetSight();
 		if ( GetTopPoint().GetDist(pObj->GetTopLevelObj()->GetTopPoint()) > iDist )
 			return false;
@@ -851,7 +865,17 @@ bool CChar::CanSee(const CObjBaseTemplate *pObj) const
 					return false;
 			}
 		}
-
+		if ((IsTrigUsed(TRIGGER_SEENPC)) && (pChar->m_pNPC) && (!IsPriv(PRIV_GM)))
+		{
+			CScriptTriggerArgs Args;
+			Args.m_iN1 = 1;
+			CChar *pChar2 = const_cast<CChar*>(pChar);
+			CChar *this2 = const_cast<CChar*>(this);
+			this2->OnTrigger(CTRIG_SeeNpc, pChar2, &Args);
+			if (Args.m_iN1 == 0) {
+				return (Args.m_iN1 != 0);
+			}
+		}
 		if ( IsStatFlag(STATF_DEAD) && !CanSeeAsDead(pChar) )
 			return false;
 

@@ -191,9 +191,10 @@ enum CTRIG_TYPE
 	CTRIG_EffectAdd,
 	CTRIG_EnvironChange,		// Char environment has changed (region, light, weather, season)
 	CTRIG_ExpChange,			// Char EXP got changed
-	CTRIG_ExpLevelChange,		// Char LEVEL got changed
+	//CTRIG_ExpLevelChange,		// Char LEVEL got changed
 	CTRIG_FameChange,			// Char FAME got changed
 	CTRIG_FollowersUpdate,		// Char CURFOLLOWER got changed
+	CTRIG_FollowMyMaster,		////Am I going to follow my master through teleport?
 	CTRIG_GetHit,				// Char got hit by someone
 	CTRIG_Hit,					// Char hit someone
 	CTRIG_HitCheck,
@@ -274,6 +275,8 @@ enum CTRIG_TYPE
 	CTRIG_Resurrect,			// Char got resurrected
 	CTRIG_SeeCrime,				// Char saw someone nearby committing a crime
 	CTRIG_SeeHidden,			// Char saw someone hidden
+	CTRIG_SeeItem,				// Can I see this item?
+	CTRIG_SeeNpc,				// Can I see this NPC?
 	CTRIG_SeeSnoop,				// Char saw someone nearby snooping an item
 	CTRIG_SkillAbort,			// SKTRIG_ABORT
 	CTRIG_SkillChange,
@@ -309,14 +312,14 @@ enum CTRIG_TYPE
 	CTRIG_UserExtCmd,
 	CTRIG_UserExWalkLimit,
 	CTRIG_UserGuildButton,
-	CTRIG_UserKRToolbar,
+	//CTRIG_UserKRToolbar,
 	CTRIG_UserMailBag,
 	CTRIG_UserQuestArrowClick,
 	CTRIG_UserQuestButton,
 	CTRIG_UserSkills,
 	CTRIG_UserSpecialMove,
 	CTRIG_UserStats,
-	CTRIG_UserUltimaStoreButton,
+	//CTRIG_UserUltimaStoreButton,
 	CTRIG_UserVirtue,
 	CTRIG_UserVirtueInvoke,
 	CTRIG_UserWarmode,

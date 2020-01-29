@@ -565,19 +565,31 @@ bool PacketMovementReq::onReceive(NetState* net)
 	BYTE sequence = readByte();
 	//DWORD crypt = readInt32();	// client fastwalk crypt (not used anymore)
 
-	if ( (net->m_sequence == 0) && (sequence != 0) )
-		direction = DIR_QTY;	// setting invalid direction to intentionally reject the walk request
-
-	if ( client->Event_Walk(direction, sequence) )
+	if (sequence != net->m_sequence)
 	{
-		if ( sequence == BYTE_MAX )
-			sequence = 0;
-		net->m_sequence = ++sequence;
+		if (net->m_sequence != 0)
+		{
+			new PacketMovementRej(client, sequence);
+			net->m_sequence = 0;
+		}
+		//direction = DIR_QTY;	// setting invalid direction to intentionally reject the walk request - é o que mano?
 	}
 	else
 	{
-		net->m_sequence = 0;
+		TRIGRET_TYPE ret = client->Event_Walk(direction, sequence);
+		if (ret == TRIGRET_RET_TRUE)
+		{
+			if (sequence == UCHAR_MAX)
+				sequence = 0;
+			net->m_sequence = ++sequence;
+		}
+		else if (ret == TRIGRET_RET_FALSE)
+		{
+			new PacketMovementRej(client, sequence);
+			net->m_sequence = 0;
+		}
 	}
+
 	return true;
 }
 
@@ -4688,9 +4700,9 @@ bool PacketUltimaStoreButton::onReceive(NetState *net)
 	if ( !character )
 		return false;
 
-	if ( IsTrigUsed(TRIGGER_USERULTIMASTOREBUTTON) )
-		character->OnTrigger(CTRIG_UserUltimaStoreButton, character);
-	return true;
+//	if ( IsTrigUsed(TRIGGER_USERULTIMASTOREBUTTON) )
+//		character->OnTrigger(CTRIG_UserUltimaStoreButton, character);
+//	return true;
 }
 
 
